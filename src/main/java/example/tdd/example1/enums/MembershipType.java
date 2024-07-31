@@ -1,4 +1,4 @@
-package example.tdd.repository.enums;
+package example.tdd.example1.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

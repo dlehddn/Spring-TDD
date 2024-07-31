@@ -1,6 +1,6 @@
-package example.tdd.repository.entity;
+package example.tdd.example1.repository.entity;
 
-import example.tdd.repository.enums.MembershipType;
+import example.tdd.example1.enums.MembershipType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

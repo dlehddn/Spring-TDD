@@ -1,7 +1,7 @@
-package example.tdd.repository;
+package example.tdd.example1.repository;
 
-import example.tdd.repository.entity.Membership;
-import example.tdd.repository.enums.MembershipType;
+import example.tdd.example1.repository.entity.Membership;
+import example.tdd.example1.enums.MembershipType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MembershipRepository extends JpaRepository<Membership, Long> {

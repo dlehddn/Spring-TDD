@@ -1,15 +1,12 @@
-package example.tdd.repository;
+package example.tdd.example1.repository;
 
-import example.tdd.repository.entity.Membership;
-import example.tdd.repository.enums.MembershipType;
-import org.assertj.core.api.Assertions;
-import org.hibernate.query.sqm.mutation.internal.cte.CteInsertStrategy;
+import example.tdd.example1.repository.entity.Membership;
+import example.tdd.example1.enums.MembershipType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -59,5 +56,7 @@ public class MembershipRepositoryTest {
         assertThat(findResult.getPoint()).isEqualTo(membership.getPoint());
         assertThat(findResult.getUserId()).isEqualTo(membership.getUserId());
     }
+
+
 
 }
