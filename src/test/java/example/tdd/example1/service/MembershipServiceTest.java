@@ -5,6 +5,8 @@ import example.tdd.example1.exception.MembershipException;
 import example.tdd.example1.repository.MembershipRepository;
 import example.tdd.example1.repository.entity.Membership;
 import example.tdd.example1.enums.MembershipType;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,6 +27,9 @@ public class MembershipServiceTest {
     private final String userId = "userId";
     private final MembershipType membershipType = MembershipType.NAVER;
     private final Integer point = 10000;
+
+
+
 
     @InjectMocks
     private MembershipService memberService;

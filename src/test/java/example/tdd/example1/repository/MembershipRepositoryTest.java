@@ -93,7 +93,4 @@ public class MembershipRepositoryTest {
         // then
         assertThat(memberships.size()).isEqualTo(2);
     }
-
-
-
 }

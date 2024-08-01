@@ -24,6 +24,7 @@ public class GlobalExceptionHandler  {
                 .body(new ErrorResponse(errorResult.name(), errorResult.getMessage()));
     }
 
+
     @Getter
     @RequiredArgsConstructor
     static class ErrorResponse {
