@@ -12,6 +12,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -67,4 +70,23 @@ public class MembershipServiceTest {
                 .point(point)
                 .build();
     }
+
+    @DisplayName("내가 가진 멤버십 전체 조회")
+    @Test
+    void getMyMemberships() {
+        // given
+        doReturn(Arrays.asList(
+                Membership.builder().build(),
+                Membership.builder().build(),
+                Membership.builder().build()
+        )).when(membershipRepository).findAllByUserId("userId");
+
+        // when
+        List<MembershipDetailResponse> results = memberService.getMyMemberships("userId");
+
+        // then
+        assertThat(results.size()).isEqualTo(3);
+    }
+
+
 }

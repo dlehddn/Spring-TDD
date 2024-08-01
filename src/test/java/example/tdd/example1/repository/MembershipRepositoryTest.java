@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -14,7 +16,6 @@ public class MembershipRepositoryTest {
 
     @Autowired
     private MembershipRepository memberShipRepository;
-
 
     @DisplayName("멤버십 등록")
     @Test
@@ -55,6 +56,42 @@ public class MembershipRepositoryTest {
         assertThat(findResult.getMembershipType()).isEqualTo(membership.getMembershipType());
         assertThat(findResult.getPoint()).isEqualTo(membership.getPoint());
         assertThat(findResult.getUserId()).isEqualTo(membership.getUserId());
+    }
+
+    @DisplayName("내가 가진 멤버십 조회, 멤버십이 X")
+    @Test
+    void noMembership() {
+        // given
+
+        // when
+        List<Membership> memberships = memberShipRepository.findAllByUserId("userId");
+
+        // then
+        assertThat(memberships.size()).isEqualTo(0);
+    }
+
+    @DisplayName("내가 가진 멤버십 조회, 멤버십이 여러개")
+    @Test
+    void twoMemberships() {
+        // given
+        Membership membership1 = Membership.builder()
+                .userId("userId")
+                .membershipType(MembershipType.NAVER)
+                .point(10000)
+                .build();
+
+        Membership membership2 = Membership.builder()
+                .userId("userId")
+                .membershipType(MembershipType.KAKAO)
+                .point(10000)
+                .build();
+
+        // when
+        memberShipRepository.save(membership1);
+        memberShipRepository.save(membership2);
+        List<Membership> memberships = memberShipRepository.findAllByUserId("userId");
+        // then
+        assertThat(memberships.size()).isEqualTo(2);
     }
 
 

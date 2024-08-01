@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import example.tdd.example1.enums.MembershipErrorResult;
 import example.tdd.example1.enums.MembershipType;
 import example.tdd.example1.exception.MembershipException;
+import example.tdd.example1.service.MembershipDetailResponse;
 import example.tdd.example1.service.MembershipResponse;
 import example.tdd.example1.service.MembershipService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static example.tdd.example1.controller.MembershipConstants.*;
@@ -120,14 +121,14 @@ public class MembershipControllerTest {
     @DisplayName("파라미터만 다른 비슷한 테스트 묶기, 멤버십 등록 실패")
     @ParameterizedTest
     @MethodSource("invalidMembershipAddParameter")
-    void testMethodNameHere() throws Exception {
+    void testMethodNameHere(final Integer point, final MembershipType membershipType) throws Exception {
         final String url = "/api/v1/memberships";
 
         // when
         final ResultActions resultActions = mockMvc.perform(
                 MockMvcRequestBuilders.post(url)
                         .header(USER_ID_HEADER, "userId")
-                        .content(gson.toJson(membershipRequest(-1, null)))
+                        .content(gson.toJson(membershipRequest(point, membershipType)))
                         .contentType(MediaType.APPLICATION_JSON)
         );
 
@@ -209,4 +210,39 @@ public class MembershipControllerTest {
                 .build();
     }
 
+    @DisplayName("멤버십 목록 조회 실패, 헤더에 식별값이 존재하지 않음")
+    @Test
+    void noHeader() throws Exception {
+        // given
+        final String url = "/api/v1/memberships";
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get(url)
+        );
+
+        // then
+        resultActions.andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("멤버십 목록 조회 성공")
+    @Test
+    void successGetMyMemberships() throws Exception {
+        final String url = "/api/v1/memberships";
+        doReturn(Arrays.asList(
+                MembershipDetailResponse.builder().build(),
+                MembershipDetailResponse.builder().build(),
+                MembershipDetailResponse.builder().build()
+        )).when(membershipService).getMyMemberships(any(String.class));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders
+                        .get(url)
+                        .header(USER_ID_HEADER, "userId")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk());
+    }
 }

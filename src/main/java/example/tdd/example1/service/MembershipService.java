@@ -8,6 +8,9 @@ import example.tdd.example1.repository.entity.Membership;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class MembershipService {
@@ -29,5 +32,15 @@ public class MembershipService {
                 .id(membership.getId())
                 .membershipType(membership.getMembershipType())
                 .build();
+    }
+
+    public List<MembershipDetailResponse> getMyMemberships(String userId) {
+        List<Membership> memberships = membershipRepository.findAllByUserId(userId);
+        return memberships.stream()
+                .map(m -> MembershipDetailResponse.builder()
+                        .id(m.getId())
+                        .membershipType(m.getMembershipType())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
